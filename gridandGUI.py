@@ -4,6 +4,7 @@ import random
 
 userChoice = "nothing yet"
 computerChoice = "nothing yet"
+
 def terminate(event=None): # exiting program
     exit()
 
@@ -16,26 +17,26 @@ def reset_game(): # resetting the game
     TestLabel.config(text=" ")
     play_game() 
 
-def scissors(event=None): #this happens when you choose scissors
+def scissors(event=None): # this happens when you choose scissors
     global userChoice
     userChoice = "scissors"
     print("Scissors")
 
-def rock(event=None):     #this haappens when you choose rock
+def rock(event=None):     # this happens when you choose rock
     global userChoice
     userChoice = "rock"
     print("Rock")
 
-def paper(event=None):    #this happens when you choose paper
+def paper(event=None):    # this happens when you choose paper
     global userChoice
     userChoice = "paper"
     print("Paper")
 
-def get_computer_choice(): #this makes the 'computer' choose randomly
+def get_computer_choice(): # this makes the 'computer' choose randomly
     return random.choice(['rock', 'paper', 'scissors'])
 
-def determine_winner(computer_choice): #this determines whether the user or the computer wins
-    global userChoice #referencing the actual variable in the program
+def determine_winner(computer_choice): # this determines whether the user or the computer wins
+    global userChoice # referencing the actual variable in the program
     if userChoice == computer_choice:
         TestLabel.config(text="It's a tie")
     elif (userChoice == 'rock' and computer_choice == 'scissors') or \
@@ -54,7 +55,7 @@ def play_game():
     
     while userChoice == "nothing yet":
         mainWindow.update()
-    ExitButton.place(x=900, y= 110)
+    ExitButton.grid(row=0, column=0, columnspan=8, sticky="ew")  # Centering the buttons
 
     computer_choice = get_computer_choice()
     determine_winner(computer_choice)
@@ -64,40 +65,50 @@ def play_game():
 if __name__ == "__main__":
     mainWindow = Tk()
     mainWindow.title('Main Window')
-    mainWindow.geometry('1280x720+10+20')
 
     button_font = ("Helvetica", 16)
 
     TestLabel = Label(text=" ", foreground="black", font=("Helvetica", 22))
-    TestLabel.place(x=500, y=100)
+    TestLabel.grid(row=1, column=0, columnspan=8, sticky="ew")  # Centering the label
 
     Player = Label(text="The player chose " + userChoice, foreground="black", font=("Helvetica", 22))
-    Player.place(x=500, y=200)
+    Player.grid(row=2, column=0, columnspan=8, sticky="ew")  # Centering the label
 
     Computer = Label(text="The computer chose " + computerChoice, foreground="black", font=("Helvetica", 22))
-    Computer.place(x=500, y=300)
+    Computer.grid(row=3, column=0, columnspan=8, sticky="ew")  # Centering the label
 
     style = Style()
     style.configure('TButton', font=button_font)
 
     Scissors = Button(text="Scissors", style='TButton')
-    Scissors.place(x=840, y=610)
+    Scissors.grid(row=4, column=4, columnspan=2, sticky="ew")  # Centering the buttons
     Scissors.bind('<Button-1>', scissors)
 
     Rock = Button(text="Rock", style='TButton')
-    Rock.place(x=640, y=610)
+    Rock.grid(row=4, column=2, columnspan=2, sticky="ew")  # Centering the buttons
     Rock.bind('<Button-1>', rock)
 
     Paper = Button(text="Paper", style='TButton')
-    Paper.place(x=440, y=610)
+    Paper.grid(row=4, column=0, columnspan=2, sticky="ew")  # Centering the buttons
     Paper.bind('<Button-1>', paper)
 
     ExitButton = Button(text="Terminate Program",padding=10)
     ExitButton.bind('<Button-1>', terminate)
 
     ResetButton = Button(text="Restart Program",padding=10, style='TButton')
-    ResetButton.place(x=100, y= 110)
+    ResetButton.grid(row=0, column=7, columnspan=1, sticky="e")  # Aligning to the right
     ResetButton.config(command=reset_game)
+
+    mainWindow.update_idletasks() # Update idle tasks to get correct frame size
+    frame_width = mainWindow.winfo_width()
+    frame_height = mainWindow.winfo_height()
+
+    # Calculate the total width and height needed
+    total_width = frame_width + 20
+    total_height = frame_height + 20
+
+    # Set geometry to fit all frames and buttons
+    mainWindow.geometry(f"{total_width}x{total_height}")
 
     play_game()
 
